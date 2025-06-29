@@ -53,6 +53,36 @@ void mostrarContactos(ContactoEmail contactos[], int cantidad) {
 	}
 }
 
+void eliminarContacto(ContactoEmail contactos[], int& cantidad) {
+    if (cantidad == 0) {
+        cout << "\nNo hay contactos para eliminar.\n";
+        return;
+    }
+
+    cout << "\n--- Eliminar un contacto ---" << endl;
+    for (int i = 0; i < cantidad; ++i) {
+        cout << i + 1 << ") " << contactos[i].nombres << " - " << contactos[i].email << endl;
+    }
+
+    int indice;
+    cout << "Ingrese el número del contacto a eliminar: ";
+    cin >> indice;
+    cin.ignore();
+
+    if (indice < 1 || indice > cantidad) {
+        cout << "Número inválido.\n";
+        return;
+    }
+
+    // Eliminar moviendo los contactos posteriores hacia la izquierda
+    for (int i = indice - 1; i < cantidad - 1; ++i) {
+        contactos[i] = contactos[i + 1];
+    }
+
+    cantidad--;
+    cout << "* Contacto eliminado correctamente. *\n";
+}
+
 int main(){
 	ContactoEmail contactos[MAX_CONTACTOS];
     int cantidadContactos = 0;
@@ -62,7 +92,7 @@ int main(){
 		cout<<"a) Agregar un contacto"<<endl;
 		cout<<"b) Eliminar un contacto"<<endl;
 		cout<<"c) Mostrar listado general de contactos registrados hasta ese momento."<<endl; 
-		cout<<"d) Mostrar listado de contactos existentes"<<endl;
+		cout<<"d) Mostrar listado de contactos existentes, ordenado por servidor de correo de las cuentas."<<endl;
 		cout<<"e) Salir del programa"<<endl;
 		cout<<">>Seleccione una opcion (segun la letra): ";
 		cin>>opcion;
@@ -71,9 +101,12 @@ int main(){
 			case 'a':
 				agregarContacto(contactos, cantidadContactos);
 				break;
+			case 'b':
+  				eliminarContacto(contactos, cantidadContactos);
+  				break;
 			case 'c':
-				mostrarContactos(contactos, cantidadContactos);
-				break;
+                mostrarContactos(contactos, cantidadContactos);
+                break;
 			case 'e':
 				cout<<"Saliento del programa."<<endl;
 				return 0;
