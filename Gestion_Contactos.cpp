@@ -83,6 +83,54 @@ void eliminarContacto(ContactoEmail contactos[], int& cantidad) {
     cout << "* Contacto eliminado correctamente. *\n";
 }
 
+string obtenerServidorEmail(const string& email) {
+    string servidor = "";
+    bool arrobaEncontrada = false;
+
+    for (int i = 0; i < email.length(); i++) {
+        if (arrobaEncontrada) {
+            servidor += email[i];
+        }
+        if (email[i] == '@') {
+            arrobaEncontrada = true;
+        }
+    }
+
+    return servidor;
+}
+
+void ordenarPorServidor(ContactoEmail contactos[], int cantidad) {
+    for (int i = 0; i < cantidad - 1; ++i) {
+        for (int j = 0; j < cantidad - i - 1; ++j) {
+            string servidorA = obtenerServidorEmail(contactos[j].email);
+            string servidorB = obtenerServidorEmail(contactos[j + 1].email);
+
+            if (servidorA > servidorB) {
+                ContactoEmail temp = contactos[j];
+                contactos[j] = contactos[j + 1];
+                contactos[j + 1] = temp;
+            }
+        }
+    }
+}
+
+void mostrarContactosPorServidor(ContactoEmail contactos[], int cantidad) {
+    if (cantidad == 0) {
+        cout << "\nNo hay contactos registrados.\n";
+        return;
+    }
+    ordenarPorServidor(contactos, cantidad);
+    string servidorAnterior = "";
+    for (int i = 0; i < cantidad; ++i) {
+        string servidor = obtenerServidorEmail(contactos[i].email);
+        if (servidor != servidorAnterior) {
+            cout << "\n--- Contactos con servidor: " << servidor << " ---\n";
+            servidorAnterior = servidor;
+        }
+        cout << "  " << contactos[i].nombres << " - " << contactos[i].email << endl;
+    }
+}
+
 int main(){
 	ContactoEmail contactos[MAX_CONTACTOS];
     int cantidadContactos = 0;
@@ -107,6 +155,9 @@ int main(){
 			case 'c':
                 mostrarContactos(contactos, cantidadContactos);
                 break;
+            case 'd':
+			    mostrarContactosPorServidor(contactos, cantidadContactos);
+			    break;
 			case 'e':
 				cout<<"Saliento del programa."<<endl;
 				return 0;
