@@ -36,6 +36,23 @@ void agregarContacto(ContactoEmail contactos[], int& cantidad){
     cout << "* Contacto agregado correctamente. *\n" << endl;
 }
 
+void mostrarContactos(ContactoEmail contactos[], int cantidad) {
+	cout << "\n--- Listado General de Contactos ---" << endl;
+	if (cantidad == 0) {
+		cout << "No hay contactos registrados.\n" << endl;
+		return;
+	}
+	for (int i = 0; i < cantidad; ++i) {
+		cout << "Contacto #" << (i + 1) << ":\n";
+		cout << "  Nombres: " << contactos[i].nombres << endl;
+		cout << "  Sexo: " << contactos[i].sexo << endl;
+		cout << "  Edad: " << contactos[i].edad << endl;
+		cout << "  Telefono: " << contactos[i].telefono << endl;
+		cout << "  Email: " << contactos[i].email << endl;
+		cout << "  Nacionalidad: " << contactos[i].nacionalidad << endl<<endl;
+	}
+}
+
 int main(){
 	ContactoEmail contactos[MAX_CONTACTOS];
     int cantidadContactos = 0;
@@ -53,6 +70,9 @@ int main(){
 		switch (opcion){
 			case 'a':
 				agregarContacto(contactos, cantidadContactos);
+				break;
+			case 'c':
+				mostrarContactos(contactos, cantidadContactos);
 				break;
 			case 'e':
 				cout<<"Saliento del programa."<<endl;
